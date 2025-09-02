@@ -1,7 +1,7 @@
 
 # AgTech ERP Platform Backend
 
-Its a cooperative management **web application system** built with **Django** that allows an **Admin** to manage farmers and their crops, while **Farmers** can manage their own profiles and crops.
+Its a cooperative management **web application system** built with **Django** and **PostgreSQL**that allows an **Admin** to manage farmers and their crops, while **Farmers** can manage their own profiles and crops.
 
 ## 📜 License
 
