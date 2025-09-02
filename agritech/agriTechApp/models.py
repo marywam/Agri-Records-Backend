@@ -51,11 +51,17 @@ class User(AbstractUser):
         return f"{self.email} ({self.role})"
     
 class Crop(models.Model):
-    farmer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="crops")
+    farmer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="crops"
+    )
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=100)
+    quantity = models.PositiveIntegerField(default=0)  # 👈 added
     planted_date = models.DateField()
     harvested = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.name} ({self.farmer.email})"
+

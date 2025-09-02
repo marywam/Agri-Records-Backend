@@ -48,13 +48,14 @@ class LoginView(generics.GenericAPIView):
         })
         
 
-# Profile View
+# Profile View (farmer can only see/update self)
 class UserProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrAdmin]
 
     def get_object(self):
-        return self.request.user  # farmers only access their own profile
+        return self.request.user
+
 
 
 # Farmer Management (Admin only)
@@ -65,6 +66,7 @@ class FarmerListView(generics.ListAPIView):
 
 
 # Crop Management
+# Crop Management
 class CropListCreateView(generics.ListCreateAPIView):
     serializer_class = CropSerializer
     permission_classes = [permissions.IsAuthenticated, IsFarmer | IsAdmin]
@@ -72,11 +74,12 @@ class CropListCreateView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         if user.role == "admin":
-            return Crop.objects.all()  # Admin sees all
-        return Crop.objects.filter(farmer=user)  # Farmers see only their crops
+            return Crop.objects.all()
+        return Crop.objects.filter(farmer=user)  # 👈 Farmers see only their crops
 
     def perform_create(self, serializer):
-        serializer.save(farmer=self.request.user)
+        serializer.save(farmer=self.request.user)  # 👈 Force ownership
+
 
 
 class CropDetailView(generics.RetrieveUpdateDestroyAPIView):

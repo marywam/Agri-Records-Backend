@@ -14,10 +14,17 @@ class IsFarmer(BasePermission):
 
 
 class IsOwnerOrAdmin(BasePermission):
-    """Farmers can only access their own crops. Admins can access all."""
+    """Farmers can only access their own crops or profile. Admins can access all."""
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated
+
     def has_object_permission(self, request, view, obj):
         if request.user.role == "admin":
             return True
-        # IMPORTANT: use obj.farmer, not obj.user
-        return obj.farmer == request.user
+        # Farmers can only see their own profile or crops
+        if hasattr(obj, "farmer"):  # Crop model
+            return obj.farmer == request.user
+        return obj == request.user  # User model (profile)
+
 

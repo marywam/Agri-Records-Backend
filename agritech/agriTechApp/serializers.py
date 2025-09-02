@@ -40,8 +40,9 @@ class LoginSerializer(serializers.Serializer):
 class CropSerializer(serializers.ModelSerializer):
     class Meta:
         model = Crop
-        fields = ["id", "name", "type", "planted_date", "harvested", "farmer"]
-        read_only_fields = ["farmer"]  # Farmers shouldn’t assign crops to others
+        fields = ["id", "name", "type", "quantity", "planted_date", "harvested", "farmer"]
+        read_only_fields = ["farmer"]  # Farmers cannot assign crops to others
+
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
