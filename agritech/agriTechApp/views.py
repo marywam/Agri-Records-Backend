@@ -1,5 +1,6 @@
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -7,6 +8,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from .serializers import *
 from .permissions import IsAdmin, IsFarmer, IsOwnerOrAdmin
+from django.db.models import Count
 from .models import *
 
 User = get_user_model()
@@ -81,4 +83,90 @@ class CropDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Crop.objects.all()
     serializer_class = CropSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrAdmin]
+    
+
+class AdminDashboardView(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+    def get(self, request):
+        data = {
+            "total_farmers": User.objects.filter(role="farmer").count(),
+            "total_crops": Crop.objects.count(),
+        }
+        serializer = AdminDashboardSerializer(data)
+        return Response(serializer.data)
+
+class CropsPerFarmerView(APIView):
+    permission_classes = [IsAuthenticated, IsAdmin]
+
+    def get(self, request):
+        data = (
+            Crop.objects.values("farmer__username")
+            .annotate(total_crops=Count("id"))
+            .order_by("farmer__username")
+        )
+
+        # Map to serializer structure
+        results = [
+            {"username": item["farmer__username"], "total_crops": item["total_crops"]}
+            for item in data
+        ]
+
+        serializer = CropsPerFarmerSerializer(results, many=True)
+        return Response(serializer.data)
+    
+# Admin Farmer Management
+class FarmerListCreateView(generics.ListCreateAPIView):
+    """Admin can list all farmers and create a new one"""
+    queryset = User.objects.filter(role="farmer")
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
+
+    def perform_create(self, serializer):
+        # force role to farmer (admins cannot create other admins this way)
+        serializer.save(role="farmer")
+
+
+class FarmerDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Admin can view, edit or delete a farmer"""
+    queryset = User.objects.filter(role="farmer")
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
+    
+# Admin Crop Management
+class AdminCropListView(generics.ListAPIView):
+    """Admin can view all crops"""
+    queryset = Crop.objects.all()
+    serializer_class = CropSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
+
+
+class AdminCropDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Admin can edit or delete any crop"""
+    queryset = Crop.objects.all()
+    serializer_class = CropSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
+    
+class FarmerDashboardView(APIView):
+    permission_classes = [IsAuthenticated, IsFarmer]
+
+    def get(self, request):
+        total_crops = Crop.objects.filter(farmer=request.user).count()
+        data = {"total_crops": total_crops}
+        serializer = FarmerDashboardSerializer(data)
+        return Response(serializer.data)
+    
+class FarmerCropsByTypeView(APIView):
+    permission_classes = [IsAuthenticated, IsFarmer]
+
+    def get(self, request):
+        data = (
+            Crop.objects.filter(farmer=request.user)
+            .values("type")
+            .annotate(total=Count("id"))
+            .order_by("type")
+        )
+
+        serializer = CropsByTypeSerializer(data, many=True)
+        return Response(serializer.data)
 

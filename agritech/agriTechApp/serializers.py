@@ -49,6 +49,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ["id", "email", "username", "first_name", "last_name", "role"]
         read_only_fields = ["email", "role"]
+        
+class AdminDashboardSerializer(serializers.Serializer):
+    total_farmers = serializers.IntegerField()
+    total_crops = serializers.IntegerField()
     
+class CropsPerFarmerSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    total_crops = serializers.IntegerField()
+
+class FarmerDashboardSerializer(serializers.Serializer):
+    total_crops = serializers.IntegerField()
+  
+class CropsByTypeSerializer(serializers.Serializer):
+    type = serializers.CharField()
+    total = serializers.IntegerField()
+
     
 
