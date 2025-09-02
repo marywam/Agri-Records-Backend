@@ -187,6 +187,7 @@ DB_PORT=5432
 
 ✅ Open your Django settings.py file and modify it to use values from .env.
 from decouple import config
+
 SECRET_KEY = config("SECRET_KEY")
 
 DATABASES = {
