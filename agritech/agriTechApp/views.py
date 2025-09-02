@@ -1,11 +1,13 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.contrib.auth import get_user_model
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import *
+from .permissions import IsAdmin, IsFarmer, IsOwnerOrAdmin
+from .models import *
 
 User = get_user_model()
 
@@ -42,4 +44,41 @@ class LoginView(generics.GenericAPIView):
                 "role": user.role,
             }
         })
+        
+
+# Profile View
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrAdmin]
+
+    def get_object(self):
+        return self.request.user  # farmers only access their own profile
+
+
+# Farmer Management (Admin only)
+class FarmerListView(generics.ListAPIView):
+    queryset = User.objects.filter(role="farmer")
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated, IsAdmin]
+
+
+# Crop Management
+class CropListCreateView(generics.ListCreateAPIView):
+    serializer_class = CropSerializer
+    permission_classes = [permissions.IsAuthenticated, IsFarmer | IsAdmin]
+
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == "admin":
+            return Crop.objects.all()  # Admin sees all
+        return Crop.objects.filter(farmer=user)  # Farmers see only their crops
+
+    def perform_create(self, serializer):
+        serializer.save(farmer=self.request.user)
+
+
+class CropDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Crop.objects.all()
+    serializer_class = CropSerializer
+    permission_classes = [permissions.IsAuthenticated, IsOwnerOrAdmin]
 

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from .models import *
 
 User = get_user_model()
 
@@ -34,3 +35,20 @@ class RegisterSerializer(serializers.ModelSerializer):
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
+    
+
+class CropSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Crop
+        fields = ["id", "name", "type", "planted_date", "harvested", "farmer"]
+        read_only_fields = ["farmer"]  # Farmers shouldn’t assign crops to others
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "email", "username", "first_name", "last_name", "role"]
+        read_only_fields = ["email", "role"]
+    
+    
+
