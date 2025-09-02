@@ -39,14 +39,14 @@ python -m pip install --upgrade pip
 
 ```
 
-### 5. Install Django
+### 4. Install Django
 
 ```bash
 pip install django
 
 ```
 
-### 6. Create the Django project
+### 5. Create the Django project
 
 ```bash
 python -m django startproject agritech
@@ -55,14 +55,14 @@ cd agritech
 
 ```
 
-### 7. Create a Django app
+### 6. Create a Django app
 
 ```bash
 django-admin startapp agriTechApp
 
 ```
 
-### 8. Create a requirements file
+### 7. Create a requirements file
 
 ```bash
 cd ..
@@ -70,7 +70,7 @@ touch requirements.txt
 
 ```
 
-### 9. Install essential packages
+### 8. Install essential packages
 
 ```bash
 pip install djangorestframework
@@ -79,7 +79,7 @@ pip install python-dotenv
 
 ```
 
-### 10. Update Django settings
+### 9. Update Django settings
 
 ```python
 # settings.py
@@ -100,7 +100,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 ```
 
-### 11. Freeze dependencies and push to Git
+### 10. Freeze dependencies and push to Git
 
 ```bash
 pip freeze > requirements.txt
@@ -110,7 +110,7 @@ git push
 
 ```
 
-### 12. Run initial migrations and start the server
+### 11. Run initial migrations and start the server
 
 ```bash
 cd agritech
