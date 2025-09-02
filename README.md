@@ -214,6 +214,9 @@ pip freeze > requirements.txt
 
 ```bash
 cd agritech
+python manage.py makemigrations agriTechApp
+python manage.py migrate agriTechApp
+
 python manage.py migrate
 
 ```
