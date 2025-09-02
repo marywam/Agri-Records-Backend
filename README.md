@@ -128,7 +128,7 @@ sudo systemctl status postgresql
 
 #Log in to PostgreSQL
 💡By default, PostgreSQL creates a system user postgres.
---Switch to that user: --
+#Switch to that user: 
 sudo -i -u postgres
 
 #Now open the PostgreSQL shell
@@ -155,7 +155,7 @@ GRANT ALL PRIVILEGES ON DATABASE db_name TO db-user;
 exit
 
 #Install PostgreSQL adapter for Django
---In your virtual environment inside your project--
+#In your virtual environment inside your project
 install psycopg2
 
 # Install psycopg2 (PostgreSQL adapter for Django)
@@ -167,7 +167,7 @@ pip install psycopg2-binary
 pip install python-decouple
 
 ✅ Create a .env file
---In your Django project root folder (where manage.py lives), create a file named--
+#In your Django project root folder (where manage.py lives), create a file named
 .env
 
 #Inside it, add your database credentials and secret key. 
