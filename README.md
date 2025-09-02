@@ -172,8 +172,10 @@ pip install python-decouple
 
 #Inside it, add your database credentials and secret key. 
 ✅ Generate a new secret key--
-#Run this command inside your Django project folder (with your virtual environment active)
-python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
+#Run this command inside your Django project folder 
+#(with your virtual environment active)
+python -c "from django.core.management.utils import 
+get_random_secret_key; print(get_random_secret_key())"
 
 SECRET_KEY=your-django-secret-key
 
