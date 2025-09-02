@@ -110,11 +110,34 @@ git push
 
 ```
 
-### 11. Run initial migrations and start the server
+### 11. Run initial migrations
 
 ```bash
 cd agritech
 python manage.py migrate
+
+```
+
+### 12. Create a superuser (Admin Account)
+
+```bash
+python manage.py createsuperuser
+
+```
+
+You'll be prompted to enter:
+
+Username
+
+Email address
+
+Password
+
+🔐 This account lets you access the Django admin panel at <http://127.0.0.1:8000/admin>
+
+### 13. Start the development server
+
+```bash
 python manage.py runserver
 
 ```
