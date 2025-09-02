@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User   # ✅ import the correct model
+from .models import *  
+
 
 class CustomUserAdmin(UserAdmin):
     # Fields to display in Django Admin
