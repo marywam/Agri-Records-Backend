@@ -127,13 +127,14 @@ python manage.py createsuperuser
 
 You'll be prompted to enter:
 
-Username
+- **Username**  
+- **Email address**  
+- **Password**
 
-Email address
+Once created, log in at:
+<http://127.0.0.1:8000/admin>
 
-Password
-
-🔐 This account lets you access the Django admin panel at <http://127.0.0.1:8000/admin>
+> 💡 This account gives you full access to manage farmers, crops, and cooperative records via the Django admin interface.
 
 ### 13. Start the development server
 
