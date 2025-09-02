@@ -139,13 +139,13 @@ postgres=#
 
 #Create a Database and User
 💡Inside psql, run these commands:
--- Create a new database for your Django project
+-- Create a new database for your Django project --
 CREATE DATABASE  db_name;
 
--- Create a new PostgreSQL user with password
+-- Create a new PostgreSQL user with password --
 CREATE USER db_user WITH PASSWORD 'yourpassword';
 
--- Grant privileges to the new user on the database
+-- Grant privileges to the new user on the database --
 GRANT ALL PRIVILEGES ON DATABASE db_name TO db-user;
 
 #Exit psql
