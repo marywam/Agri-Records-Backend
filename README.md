@@ -123,7 +123,4 @@ python manage.py runserver
 
 Visit <http://127.0.0.1:8000> to access the development server.
 
-
-
-
-
+You’re now ready to build out models, APIs, and views for the AgTech ERP Platform. Happy coding!
