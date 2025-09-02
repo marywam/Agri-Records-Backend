@@ -10,7 +10,7 @@ Follow these steps to clone the repository and run the server on your local mach
 ### 1. Clone the repository
 
 ```bash
-git clone < https://github.com/marywam/Agri-Records-Backend.git > 
+git clone https://github.com/marywam/Agri-Records-Backend.git
 
 cd Agri-Records-Backend
 
