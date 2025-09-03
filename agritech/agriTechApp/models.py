@@ -35,6 +35,18 @@ class User(AbstractUser):
 
     email = models.EmailField(unique=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default="farmer")
+    
+     # 🔹 Extra Farmer Fields
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    location = models.CharField(max_length=255, blank=True, null=True)
+    farm_size = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    gender = models.CharField(
+        max_length=10,
+        choices=[("male", "Male"), ("female", "Female"), ("other", "Other")],
+        blank=True,
+        null=True
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "first_name", "last_name"]

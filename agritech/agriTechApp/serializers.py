@@ -12,7 +12,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "email", "username", "first_name", "last_name", "password", "confirm_password"]
+        fields = ["id", "email", "username", "first_name", "last_name",  "phone_number", "location", "farm_size","date_of_birth", "gender", "password", "confirm_password"]
 
     def validate(self, attrs):
         if attrs["password"] != attrs["confirm_password"]:
@@ -26,6 +26,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             username=validated_data["username"],
             first_name=validated_data["first_name"],
             last_name=validated_data["last_name"],
+            phone_number=validated_data.get("phone_number"),
+            location=validated_data.get("location"),
+            farm_size=validated_data.get("farm_size"),
+            date_of_birth=validated_data.get("date_of_birth"),
+            gender=validated_data.get("gender"),
             password=validated_data["password"],
             role="farmer"
         )
@@ -48,7 +53,7 @@ class CropSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "email", "username", "first_name", "last_name", "role"]
+        fields = ["id", "email", "username", "first_name", "last_name", "role", "phone_number", "location",  "farm_size",  "date_of_birth", "gender"]
         read_only_fields = ["email", "role"]
         
 class AdminDashboardSerializer(serializers.Serializer):
